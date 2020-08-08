@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/home.css' %}">
+<div class='body'>
+    <input type='submit' onclick='reveal_signup()' id='signup' value='Signup'/>
+    <form action='signup/' method='POST'>
+        {% csrf_token %}
+        <label for='username' style='visibility:hidden;' id='user_label'>Username</label>
+        <input type='hidden' name='username' id='username'/>
+        <label for='password' style='visibility:hidden;' id='pass_label'>Password</label>
+        <input type='hidden' name='password' id='password'/>
+        <input type='hidden' value='Save' id='save'/>
+    </form>
+    <input type='submit' onclick='reveal_login()' id='login' value='Login'/>
+    <form action='login/' method='POST'>
+        {% csrf_token %}
+        <label for='username' style='visibility:hidden;' id='user_label_2'>Username</label>
+        <input type='hidden' name='username' id='username_2'/>
+        <label for='password' style='visibility:hidden;' id='pass_label_2'>Password</label>
+        <input type='hidden' name='password' id='password_2'/>
+        <input type='hidden' value='Login' id='login_save'/>
+    </form>
+</div>
+<script>
+    function reveal_signup() {
+        document.getElementById('user_label').style='visibility:visible;';
+        document.getElementById('pass_label').style='visibility:visible;';
+        document.getElementById('username').type = 'text';
+        document.getElementById('signup').type = 'hidden';
+        document.getElementById('password').type = 'text';
+        document.getElementById('save').type = 'submit';
+        document.getElementById('user_label_2').style='visibility:hidden;';
+        document.getElementById('pass_label_2').style='visibility:hidden;';
+        document.getElementById('username_2').type = 'hidden';
+        document.getElementById('login').type = 'submit';
+        document.getElementById('password_2').type = 'hidden';
+        document.getElementById('login_save').type = 'hidden';
+    }
+    function reveal_login() {
+        document.getElementById('user_label_2').style='visibility:visible;';
+        document.getElementById('pass_label_2').style='visibility:visible;';
+        document.getElementById('username_2').type = 'text';
+        document.getElementById('login').type = 'hidden';
+        document.getElementById('password_2').type = 'text';
+        document.getElementById('login_save').type = 'submit';
+        document.getElementById('user_label').style='visibility:hidden;';
+        document.getElementById('pass_label').style='visibility:hidden;';
+        document.getElementById('username').type = 'hidden';
+        document.getElementById('signup').type = 'submit';
+        document.getElementById('password').type = 'hidden';
+        document.getElementById('save').type = 'hidden';
+    }
+</script>
+{% endblock %}

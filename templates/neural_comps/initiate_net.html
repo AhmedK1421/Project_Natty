@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/neural_net.css' %}">
+<form action='finalize/' method='POST'> {% csrf_token %}
+    <input type='hidden' name='username' value='{{ user }}'/>
+    {{ network_form.as_p }}
+    <div class='network'>
+    <div>
+        <p>Nuerons:</p>
+            <div class='neuron'  id='dragable_neuron' draggable='true'></div>
+    </div>
+    {% for layer in layers %}
+        <div class='layer' id='{{layer}}' ondrop='drop_handler(event,{{layer}})' ondragover='dragover_handler(event)'>
+            Layer {{ layer }}
+            <input type='hidden' id='neuron_{{layer}}' name='number_of_neurons'/>
+        </div>
+    {% endfor %}
+    </div>
+    <input type='submit' value='Continue'/>
+</form>
+<script>
+    function dragstart_handler(ev) {
+        ev.dataTransfer.setData("text/html",ev.target.id);
+        ev.dataTransfer.dropEffect = 'copy';
+    }
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = 'copy';
+    }
+    function drop_handler(ev,layer) {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData('text/html');
+        var my_layer = document.getElementById(layer)
+        var new_neuron = document.createElement('div');
+        new_neuron.className = 'neuron'
+        new_neuron.innerHTML = 0
+        my_layer.appendChild(new_neuron)
+        var number_of_neurons = my_layer.innerHTML.length;
+        if (number_of_neurons === 273) {
+            var value = Math.round((number_of_neurons-102)/27) + 1
+        } else {
+            var value = Math.round((number_of_neurons-112-17)/27) + 1
+        }
+        document.getElementById('neuron_'+layer).setAttribute('value',value)
+        console.log(number_of_neurons)
+        console.log(value)
+    }
+    window.addEventListener('DOMContentLoad', () => {
+        const element = document.getElementById('dragable_neuron');
+        element.addEventListener('dragstart',dragstart_handler);
+    });
+</script>
+{% endblock %}

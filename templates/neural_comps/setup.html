@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action='initiate/' method='GET'> 
+    Number of Layers: <input type='text' name='number_of_layers'/>
+    <input type='hidden' name='user' value={{user}}/>
+    <input type='submit' value='Continue'/>
+<form>
+{% endblock %}

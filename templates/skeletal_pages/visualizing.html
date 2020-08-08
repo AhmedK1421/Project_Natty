@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/neural_net.css' %}">
+<div class='display_page'>
+    <div class='network_title'>
+        <h1>{{ network }}</h1>
+    </div>
+    <div class='network'>
+        {% for layer in layers %}
+            <div class='layer'>
+                {% for neuron in layer %}
+                    <div class='neuron'>
+                        {{ neuron }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <form class='network_actions' action='.' method='GET'>
+        <input type='hidden' name='user' value='{{ user }}'/>
+        <input type='hidden' name='network_name' value='{{ network }}'/>
+        <div class='input_values'>
+            <div>
+                {% for neuron in input_layer %}
+                    <input class='input_field' type='number' step="0.001" name='inputs'/>
+                {% endfor %}
+            </div>
+            <div id='out' style='visibility:hidden;'>
+                {% for neuron in input_layer %}
+                    <input class='input_field' type='number' step="0.001" name='training'/>
+                {% endfor %}
+            </div>
+        </div>
+        <div class='buttons'>
+            <input class='button' type='submit' value='Solve' id='go'/>
+            <a class='button' href='http://127.0.0.1:8000/signup/setup/?user={{ user }}'>Make a new one!</a>
+            <a class='button' href='http://127.0.0.1:8000/'>Log Out</a>
+        </div>
+    </form>
+    <input class='button' type='submit' value='Train' onclick='reveal()' id='train'/>
+</div>
+<script>
+    function reveal() {
+        document.getElementById('out').style = '';
+        document.getElementById('go').value = "Train";
+        document.getElementById('train').type='hidden'
+    }
+</script>
+{% endblock %}

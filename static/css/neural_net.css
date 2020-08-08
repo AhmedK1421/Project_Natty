@@ -1,0 +1,99 @@
+.neuron {
+    border-radius: 50%;
+    color:#03549F;
+    margin: 20px;
+    min-width: 60px;
+    max-width: 60px;
+    min-height: 60px;
+    overflow: hidden;
+    background: #C7C7C7;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+.layer {
+    margin:20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    min-height: 300px;
+    background: #03549F;
+    justify-content: center;
+    border-radius: 50px;
+    max-height: 300px;
+    overflow: scroll;
+}
+
+.network {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.display_page {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.network_title {
+    background: #03549F;
+    border-radius: 50px;
+    width: 300px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.network_actions {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.input_field {
+    background: #C7C7C7;
+    width:150px;
+    height: 20px;
+    margin: 20px;
+}
+
+.input_values {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background: #03549F;
+    width: 250px;
+    margin-left: 50px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 50px;
+}
+
+.button {
+    background: #03549F;
+    border-radius: 50px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+    margin: 10px;
+}

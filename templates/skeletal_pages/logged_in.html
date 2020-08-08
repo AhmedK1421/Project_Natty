@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/home.css' %}">
+<div class='body'>
+    <form action='to_net/' method='GET'>
+        Name of Network: <input type='text' name='network_name'/>
+        <input type='hidden' name='user' value='{{ user }}'/>
+    </form>
+    <form action='setup/' method='POST'>
+        {% csrf_token %}
+        Make a new network: <input type='submit' value='Go'/>
+        <input type='hidden' name='user' value='{{ user }}'/>
+    </form>
+</div>
+{% endblock %}

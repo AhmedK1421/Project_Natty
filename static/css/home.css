@@ -1,0 +1,19 @@
+html, body { 
+    background: url("../images/nerv2.png") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100%;
+  }
+
+.body {
+    background: rgba(98, 96, 96, 0.7);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.50);
+    background-size: cover;
+    margin: 30px;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

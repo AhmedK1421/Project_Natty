@@ -1,0 +1,7 @@
+.navbar {
+    background: rgba(98, 96, 96, 0.7);
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
