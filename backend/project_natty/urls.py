@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from neural_net.views import setup_net, initiate_net, finalize_net, to_net, home_page, signup, login
@@ -31,5 +31,7 @@ urlpatterns = [
     path('login/setup/',setup_net),
     path('login/setup/initiate/',initiate_net),
     path('login/setup/initiate/finalize/',finalize_net),
+    path('api/', include('neural_net.api.urls')),
+    path('api-auth/', include('rest_framework.urls'))
 ]
 urlpatterns += staticfiles_urlpatterns()
