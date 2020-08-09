@@ -25,7 +25,7 @@ class Layer(models.Model):
     layer_number      = models.IntegerField(default=0)
     parent_network    = models.ForeignKey(Network, on_delete=models.CASCADE)
     number_of_neurons = models.IntegerField(default=0)
-    wieghts           = models.CharField(max_length=100000)
+    weights           = models.CharField(max_length=100000)
     biases            = models.CharField(max_length=100000)
 
     def __str__(self):

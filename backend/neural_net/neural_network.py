@@ -145,7 +145,7 @@ class SourceNeuron():
         except:
             raise ImportError
     
-    def get_wieghts(self,result):
+    def get_weights(self,result):
         children = list(self.children.keys())
         if not children[0].children:
             return result
@@ -153,7 +153,7 @@ class SourceNeuron():
         for child in children:
             layer.append([val[1] for val in child.children.values()])
         result.append(layer)
-        return children[0].get_wieghts(result)
+        return children[0].get_weights(result)
 
 ######################################################
 #               Helper Functions                     #
@@ -207,7 +207,7 @@ def dot_product(vec_1,vec_2):
 
 def matrix_multiplier(mat_1,mat_2):
     """
-    takes two matricies and returns the product
+    takes two matrices and returns the product
     """
     if not mat_1 and not mat_2:
         return None
@@ -380,7 +380,7 @@ class Network():
         total_error = 0
         for i in range(len(outputs)):
             total_error+=(outputs[i]-expected[i])**2
-        self.wieghts = self.print_wieghts()
+        self.weights = self.print_weights()
         return total_error/len(outputs)
 
     def train_outer(self,outputs,expected):
@@ -410,14 +410,14 @@ class Network():
             result.append(changes)
         return result
 
-    def get_wieghts(self):
-        wieghts = [[[val[1] for val in neuron.children.values()] for neuron in self.network]]
-        wieghts = self.network[0].get_wieghts(wieghts)
-        return [transpose(wieght) for wieght in wieghts]
+    def get_weights(self):
+        weights = [[[val[1] for val in neuron.children.values()] for neuron in self.network]]
+        weights = self.network[0].get_weights(weights)
+        return [transpose(weight) for weight in weights]
 
-    def print_wieghts(self):
-        wieghts = self.get_wieghts()
-        return {i+1:wieghts[i] for i in range(len(wieghts))}
+    def print_weights(self):
+        weights = self.get_weights()
+        return {i+1:weights[i] for i in range(len(weights))}
 
 ######################################################
 #                 Debugging Tests                    #
@@ -459,7 +459,7 @@ def testing_training():
     test_0_error_1 = test_0.train_netowrk({(0.05,.10):[0.01,.99]})
     for _ in range(10000-1):
         test_0_error_2 = test_0.train_netowrk({(0.05,.10):[0.01,.99]})
-    print(test_0.print_wieghts(),test_0.solve_network([0.05,0.10]))
+    print(test_0.print_weights(),test_0.solve_network([0.05,0.10]))
     if test_0_error_1 < test_0_error_2:
         return 'test 0 fails\nerror 1: '+str(test_0_error_1)+'\nerror 2: '+str(test_0_error_2)
     print('Test 0 passes')

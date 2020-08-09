@@ -46,7 +46,7 @@ def finalize_net(request):
         - GET request to solve the network
     """
     #handeling the POST request by extracting the info and
-    #using it to create a network while storing all the biases, wieghts, 
+    #using it to create a network while storing all the biases, weights, 
     #number of layers and neurons per layer
     #the whole thing is then rendered to the html file to get visual
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def finalize_net(request):
         user             = User.objects.filter(username=username)[0]
         network_object   = natty(int(child_neurons[0]),{i:int(child_neurons[i]) for i in range(1,number_of_layers)})
         biases           = network_object.layer_biases
-        wieghts          = network_object.get_wieghts()
+        weights          = network_object.get_weights()
         #these are the stored network and layers models with all the information
         network = Network(network_name=name,owner=user,number_of_layers=number_of_layers)
         network.save()
@@ -73,13 +73,13 @@ def finalize_net(request):
         input_layer.save()
         for i in range(1,number_of_layers):
             layer = Layer(layer_number=i,parent_network=network,number_of_neurons=int(child_neurons[i]),
-                          wieghts=wieghts[i-1],biases=biases[i]
+                          weights=weights[i-1],biases=biases[i]
             ) 
             layer.save()
     #handeling the GET request to solve the network
     #first we reconstruct the network from the stored information
     #after reconstruction we can solve the network with given values 
-    #we then update the biases and wieghts
+    #we then update the biases and weights
     #fianlly we render the neurons' to the html to display them on the visual
     #we do not update the values because we want the values to reset to zero
     elif request.method == 'GET':
@@ -90,7 +90,7 @@ def finalize_net(request):
             for val in valuelist:
                 GET_information[key].append(val)
         #we use the GET request information to get the layer information
-        #which we then use to extract the biases and wieghts
+        #which we then use to extract the biases and weights
         name     = request.GET['network_name']
         username = request.GET['user']
         user = User.objects.filter(username=username)[0]
@@ -105,16 +105,16 @@ def finalize_net(request):
         context  = {'network':name}
         ################################################################################
         """
-        will be used for training when we will be updating the wieghts and biases
+        will be used for training when we will be updating the weights and biases
         """
         if GET_information['training'][0] != '':
             outputs   = [float(inny) for inny in GET_information['training']]
             for _ in range(1000):
                 training_error = network_object.train_netowrk({tuple(inputs):outputs})
             updated_biases   = network_object.layer_biases
-            updated_wieghts  = network_object.print_wieghts()
+            updated_weights  = network_object.print_weights()
             for i in range(1,number_of_layers):
-                Layer.objects.filter(parent_network=network,layer_number=i).update(biases=updated_biases[i],wieghts=updated_wieghts[i])
+                Layer.objects.filter(parent_network=network,layer_number=i).update(biases=updated_biases[i],weights=updated_weights[i])
             context['error']= training_error
             print(training_error)
         ################################################################################
@@ -148,7 +148,7 @@ def to_net(request):
         solution = network_object.solve_network(inputs)
     ################################################################################
         """
-        will be used for training when we will be updating the wieghts and biases
+        will be used for training when we will be updating the weights and biases
         """
     # if 'training' in GET_information:
     if 'training' in GET_information:
@@ -157,9 +157,9 @@ def to_net(request):
                 for _ in range(1000):
                     training_error = network_object.train_netowrk({tuple(inputs):outputs})
                 updated_biases   = network_object.layer_biases
-                updated_wieghts  = network_object.print_wieghts()
+                updated_weights  = network_object.print_weights()
                 for i in range(1,len(layers)):
-                    Layer.objects.filter(parent_network=network,layer_number=i).update(biases=updated_biases[i],wieghts=updated_wieghts[i])
+                    Layer.objects.filter(parent_network=network,layer_number=i).update(biases=updated_biases[i],weights=updated_weights[i])
                 context['error'] = training_error
                 print('error',training_error)
     ################################################################################
@@ -205,25 +205,25 @@ def _get_net(layers):
     """
     number_of_layers = len(layers)
     old_biases   = {}
-    old_wieghts  = {}
-    #we parse the biases and wieghts in the right format
+    old_weights  = {}
+    #we parse the biases and weights in the right format
     for i in range(1,number_of_layers):
         layer_bias    = layers[i].biases[1:len(layers[i].biases)-1].split(',')
         old_biases[i] = [float(bias) for bias in layer_bias]
-        layer_wieght  = []
-        for e in range(1,len(layers[i].wieghts)-1):
-            if layers[i].wieghts[e] == '[':
+        layer_weight  = []
+        for e in range(1,len(layers[i].weights)-1):
+            if layers[i].weights[e] == '[':
                 starting = e
-            elif layers[i].wieghts[e] == ']':
-                parsed_wieghts = layers[i].wieghts[starting+1:e].split(',')
-                if i in old_wieghts:
-                    old_wieghts[i].append([float(w) for w in parsed_wieghts])
+            elif layers[i].weights[e] == ']':
+                parsed_weights = layers[i].weights[starting+1:e].split(',')
+                if i in old_weights:
+                    old_weights[i].append([float(w) for w in parsed_weights])
                     continue
-                old_wieghts[i] = [[float(w) for w in parsed_wieghts]]
+                old_weights[i] = [[float(w) for w in parsed_weights]]
     biases   = {i:old_biases[i] for i in range(1,number_of_layers)}
-    wieghts  = {i:old_wieghts[i] for i in range(1,number_of_layers)}
-    #we reconstruct the network using the parsed information from the biases and wieghts
-    network_object = natty(layers[0].number_of_neurons,biases,False,wieghts)
+    weights  = {i:old_weights[i] for i in range(1,number_of_layers)}
+    #we reconstruct the network using the parsed information from the biases and weights
+    network_object = natty(layers[0].number_of_neurons,biases,False,weights)
     return network_object
 
 def _get_net_info(network_object,number_of_layers):
